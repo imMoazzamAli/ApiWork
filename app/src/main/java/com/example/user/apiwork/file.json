@@ -1,0 +1,40 @@
+// Register Response below
+{
+  "success": "Thank you for registering with brightLET.",
+  "customer_id": "o3Whow==",
+  "customer_name": "Camran20Khan",
+  "customer_type": "private-landlord",
+  "customer_type_description": "Private Landlord",
+  "agreed_terms": 1,
+  "agreed_share": 1,
+  "customer_api_key": "c825b8a487a9aa7c",
+  "customer_mobile_number": "07967284727",
+  "is_valid_mobile_number": 0,
+  "mobile_confirmation_code": "2744",
+  "customer_initials": "CA"
+}
+
+/*
+Login Response
+{
+    "customer_id": "o3WhpA==",
+    "customer_name": "Camran20Khan",
+    "customer_email": "ali6@gmail.com",
+    "customer_mobile_number": "07967284727",
+    "customer_type": "private-landlord",
+    "customer_status": "1",
+    "parent_customer_id": "0",
+    "agreed_terms_datetime": "2018-12-11 12:26:26",
+    "customer_share_data_datetime": "2018-12-11 12:26:26",
+    "customer_api_key": "b7e480c79fc30cdc",
+    "is_valid_mobile_number": "0",
+    "mobile_confirmation_code": "5749",
+    "customer_profile_image": "",
+    "agreed_terms": 1,
+    "agreed_share": 1,
+    "customer_initials": "CA",
+    "customer_type_description": "Private Landlord",
+    "action": "successful"
+}*/
+
+

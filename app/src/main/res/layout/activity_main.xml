@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/rlButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:gravity="top">
+
+                <Button
+                    android:id="@+id/btnUserSingle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Get Single User" />
+
+                <Button
+                    android:id="@+id/btnUserList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnUserSingle"
+                    android:layout_centerHorizontal="true"
+                    android:text="Get List User" />
+
+                <Button
+                    android:id="@+id/btnUserSingleNotFound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnUserList"
+                    android:layout_centerHorizontal="true"
+                    android:text="Single user not found" />
+
+
+                <EditText
+                    android:id="@+id/etId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnUserSingleNotFound"
+                    android:hint="Enter Id: "
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/btnGetSpecificRecord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etId"
+                    android:layout_centerHorizontal="true"
+                    android:text="Get Record Usign (@PATH)"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnGetRecordUsingQuery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnGetSpecificRecord"
+                    android:layout_centerHorizontal="true"
+                    android:text="Get Record Using (@QUERY)"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnGetRecordUsingQueryMultiple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnGetRecordUsingQuery"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="Get Record using (@QUERY Multiples) i.e. postId=3 &amp; sort_by_id &amp; order_descending"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnJumpToRegisterActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnGetRecordUsingQueryMultiple"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="jump to second screen"
+                    android:textAllCaps="false" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txtResponse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rlButtons"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Response:"
+                android:textSize="15sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtResponse"></android.support.v7.widget.RecyclerView>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

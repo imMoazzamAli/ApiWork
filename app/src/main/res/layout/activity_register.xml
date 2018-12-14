@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email only"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:id="@+id/txtRegisterResponse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etEmail"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Response"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnRegisterUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtRegisterResponse"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="Register Here" />
+
+        <Button
+            android:id="@+id/btnGoForImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnRegisterUser"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="Upload Image here" />
+
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>
