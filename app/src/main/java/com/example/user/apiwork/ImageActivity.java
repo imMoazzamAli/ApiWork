@@ -134,6 +134,7 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
 
 */
         return imgString;
+
     }
 
     public void uploadImageHere() {
