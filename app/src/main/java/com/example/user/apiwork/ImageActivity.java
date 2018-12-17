@@ -127,7 +127,6 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         byte[] array = stream.toByteArray();
         return Base64.encodeToString(array, 0);
 
-
     }
 
     public void uploadImageHere() {
