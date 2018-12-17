@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.FileUriExposedException;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -86,24 +87,18 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_IMAGE && resultCode == RESULT_OK && data != null) {
+           /* String image_name = "testing123.jpg";
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                    + File.separator + image_name
+            );
+
+            uriPath = Uri.fromFile(file);*/
+
+
             //Everything is fine.... image got successfully
             uriPath = data.getData();
             mediapath = data.getData().toString();
             try {
-
-               /* Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                assert cursor != null;
-                cursor.moveToFirst();
-                int clumnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                mediapath = cursor.getString(clumnIndex);
-                file = new File(mediapath);
-                int file_size = Integer.parseInt(String.valueOf(file.length() / 1024));
-                Log.d("file_size", "" + file_size);
-
-                cursor.close();*/
-
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriPath);
                 imgUpload.setImageBitmap(bitmap);
                 btnUploadImage.setEnabled(true);
@@ -115,25 +110,23 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public String imageToString() {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        //done using PRBHESH tutorial
+        /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
 
         byte[] imgByte = byteArrayOutputStream.toByteArray();
         String imgString = Base64.encodeToString(imgByte, Base64.DEFAULT);
-/*
 
-        // give your image file url in mCurrentPhotoPath
-        //Bitmap bitmap = BitmapFactory.decodeFile(uriPath.toString());
+        return imgString;*/
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        // In case you want to compress your image, here it's at 40%
-        bitmap.compress(Bitmap.CompressFormat.PNG, 40, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        //new video work
+        //bitmap = BitmapFactory.decodeFile(uriPath.getPath());
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        byte[] array = stream.toByteArray();
+        return Base64.encodeToString(array, 0);
 
-*/
-        return imgString;
 
     }
 
