@@ -1,5 +1,6 @@
 package com.example.user.apiwork;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -7,7 +8,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.FileUriExposedException;
+import android.os.RecoverySystem;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.PathUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -28,11 +31,14 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -48,14 +54,14 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
 
     ImageView imgUpload;
     TextView txtExtra;
-    Button btnChooseImage, btnUploadImage;
+    Button btnChooseImage, btnUploadImage, btnUploadImageOther;
 
     public static int RC_IMAGE = 1;
     Bitmap bitmap;
+    byte[] arrayData;
     Uri uriPath;
 
-    String mediapath = "";
-    File file;
+    String selectedFilePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +74,13 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
 
         btnChooseImage = findViewById(R.id.btnChooseImage);
         btnUploadImage = findViewById(R.id.btnUploadImage);
+        btnUploadImageOther = findViewById(R.id.btnUploadImageOther);
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
         btnChooseImage.setOnClickListener(this);
         btnUploadImage.setOnClickListener(this);
+        btnUploadImageOther.setOnClickListener(this);
     }
 
     public void chooseImageFromGallery() {
@@ -89,8 +97,13 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         if (requestCode == RC_IMAGE && resultCode == RESULT_OK && data != null) {
             //Everything is fine.... image got successfully
             uriPath = data.getData();
-            //mediapath = data.getData().toString();
+
+            selectedFilePath = FilePath.getPath(this, uriPath);
+
             try {
+                txtExtra.setText("URIPath.getPath(): " + uriPath.getPath() + "\n");
+                txtExtra.append("URIPath: " + uriPath.toString() + "\n");
+                txtExtra.append("SelectedFilePath: " + selectedFilePath + "\n");
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriPath);
                 imgUpload.setImageBitmap(bitmap);
                 btnUploadImage.setEnabled(true);
@@ -105,13 +118,14 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
 
-        byte[] array = byteArrayOutputStream.toByteArray();
-        String imgString = Base64.encodeToString(array, Base64.DEFAULT);
+        arrayData = byteArrayOutputStream.toByteArray();
+        String imgString = Base64.encodeToString(arrayData, Base64.DEFAULT);
 
         return imgString;
     }
 
-    public void uploadImageHere() {
+    //function to upload image in string form
+    public void uploadImageString() {
         String request = "upload-profile-image";
         String customer_id = "o3WhpA==";
         String customer_type = "private-landlord";
@@ -119,29 +133,15 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         //get converted image form above function
         final String image = imageToString();
 
-        Call<ModelImage> call = apiInterface.uploadImage(request, customer_id, customer_type, customer_api_key, image);
+        Call<ModelImage> call = apiInterface.uploadImageString(request, customer_id, customer_type, customer_api_key, image);
         call.enqueue(new Callback<ModelImage>() {
             @Override
             public void onResponse(Call<ModelImage> call, Response<ModelImage> response) {
-                //Toast.makeText(ImageActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                if (response.isSuccessful()) {
-                    //txtExtra.setText("byte array here" + image);
+                Toast.makeText(ImageActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ImageActivity.this, "Code: " + response.code(), Toast.LENGTH_LONG).show();
 
-                    Toast.makeText(ImageActivity.this, "In IF Code: " + response.code(), Toast.LENGTH_LONG).show();
-                    txtExtra.setText("Body: " + response.body() + "\n\n");
-                    txtExtra.append("URI Path: " + uriPath + "\n\n");
-                    txtExtra.append("Media Path: " + mediapath + "\n\n");
-
-                } else {
-                    Toast.makeText(ImageActivity.this, "Response Not Success & Null Body: " + response.code(), Toast.LENGTH_LONG).show();
-
-                    txtExtra.setText("Body: " + response.body() + "\n\n");
-                    //txtExtra.append("Get Images: " + response.body().getImages() + "\n\n");
-
-                    txtExtra.append("URI Path: " + uriPath + "\n\n");
-                    txtExtra.append("Media Path: " + mediapath);
-
-                }
+                txtExtra.setText("Body: " + response.body() + "\n");
+                txtExtra.append("URI Path: " + uriPath + "\n");
             }
 
             @Override
@@ -149,31 +149,66 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(ImageActivity.this, "Failure", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     public void uploadImageNew() {
-
-        ArrayList arrayList = new ArrayList();
-        arrayList.add(mediapath);
-
         String request = "upload-profile-image";
         String customer_id = "o3WhpA==";
         String customer_type = "private-landlord";
         String customer_api_key = "b7e480c79fc30cdc";
 
-        Call<ModelImage> call = apiInterface.uploadImageNew(request, customer_id, customer_type, customer_api_key, file);
+        //5th parameter
+        //final File file = new File(uriPath.getPath());
+        final File file = new File(selectedFilePath);
 
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        //RequestBody reqFile = RequestBody.create(MediaType.parse("multipart"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("images", file.getName(), reqFile);
+
+
+        Call<ModelImage> call = apiInterface.uploadImageNew(request, customer_id, customer_type, customer_api_key, body);
+        call.enqueue(new Callback<ModelImage>() {
+            @Override
+            public void onResponse(Call<ModelImage> call, Response<ModelImage> response) {
+                Toast.makeText(ImageActivity.this, "Success", Toast.LENGTH_LONG).show();
+                Toast.makeText(ImageActivity.this, "Code: " + response.code(), Toast.LENGTH_LONG).show();
+
+                txtExtra.setText("Body: " + response.body() + "\n\n");
+                txtExtra.append("File Name: " + file.getName() + "\n\n");
+                txtExtra.append("File Path: " + uriPath.getPath() + "\n\n");
+            }
+
+            @Override
+            public void onFailure(Call<ModelImage> call, Throwable t) {
+                Toast.makeText(ImageActivity.this, "Failure", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void uploadImageMultipart() {
+        RequestBody request = RequestBody.create(MultipartBody.FORM, "upload-profile-image");
+        RequestBody customer_id = RequestBody.create(MultipartBody.FORM, "o3WhpA==");
+        RequestBody customer_type = RequestBody.create(MultipartBody.FORM, "private-landlord");
+        RequestBody customer_api_key = RequestBody.create(MultipartBody.FORM, "b7e480c79fc30cdc");
+
+/*
+        String request = "upload-profile-image";
+        String customer_id = "o3WhpA==";
+        String customer_type = "private-landlord";
+        String customer_api_key = "b7e480c79fc30cdc";
+*/
+
+        //File file = new File(uriPath.toString());
+        File file = new File(selectedFilePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("images", file.getName(), reqFile);
+
+        Call<ModelImage> call = apiInterface.uploadImageMultipart(request, customer_id, customer_type, customer_api_key, body);
         call.enqueue(new Callback<ModelImage>() {
             @Override
             public void onResponse(Call<ModelImage> call, Response<ModelImage> response) {
                 Toast.makeText(ImageActivity.this, "Success", Toast.LENGTH_SHORT).show();
-
-                Toast.makeText(ImageActivity.this, "Code: " + response.code(), Toast.LENGTH_LONG).show();
-                txtExtra.setText("Body: " + response.body() + "\n\n");
-                txtExtra.append("URI Path" + uriPath + "\n\n");
-                txtExtra.append("Media Path" + mediapath + "\n\n");
-
+                Toast.makeText(ImageActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -181,22 +216,87 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(ImageActivity.this, "Failure", Toast.LENGTH_SHORT).show();
             }
         });
-  /*//get converted image form above function
-        String path = uriPath.getPath();
-        File file = null;
-        try {
-            file = new File(new URI(path).toString());
+    }
 
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+    public void uploadImageQueryMap() {
+        //RequestBody request = RequestBody.create(MultipartBody.FORM, "upload-profile-image");
+        RequestBody customer_id = RequestBody.create(MultipartBody.FORM, "o3WhpA==");
+        RequestBody customer_type = RequestBody.create(MultipartBody.FORM, "private-landlord");
+        RequestBody customer_api_key = RequestBody.create(MultipartBody.FORM, "b7e480c79fc30cdc");
 
+        String request = "upload-profile-image";
 
-        RequestBody requestFile = RequestBody.create(MediaType.parse(getContentResolver().getType(uriPath)), file);
-
-        // MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body = MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+/*
+        String request = "upload-profile-image";
+        String customer_id = "o3WhpA==";
+        String customer_type = "private-landlord";
+        String customer_api_key = "b7e480c79fc30cdc";
 */
+
+        Map<String, RequestBody> params = new HashMap<>();
+        // params.put("request", request);
+        params.put("customer_id", customer_id);
+        params.put("customer_type", customer_type);
+        params.put("customer_api_key", customer_api_key);
+
+
+        //File file = new File(uriPath.toString());
+        File file = new File(selectedFilePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("images", file.getName(), reqFile);
+
+        params.put("images", reqFile);
+
+        Call<ModelImage> call = apiInterface.uploadImageQueryMap(request, params);
+        call.enqueue(new Callback<ModelImage>() {
+            @Override
+            public void onResponse(Call<ModelImage> call, Response<ModelImage> response) {
+                Toast.makeText(ImageActivity.this, "Code: " + response.code(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<ModelImage> call, Throwable t) {
+                Toast.makeText(ImageActivity.this, "Failure ", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void uploadImageQuery() {
+        //ali6@gmail.com information
+        String request = "upload-profile-image";
+        String customer_id = "o3WhpA==";
+        String customer_type = "private-landlord";
+        String customer_api_key = "b7e480c79fc30cdc";
+
+       /* String request = "upload-profile-image";
+        String customer_id = "onqfqQ==";
+        String customer_type = "private-landlord";
+        String customer_api_key = "9e52c2ea3e73465e";*/
+
+        //File file = new File(uriPath.toString());
+        File file = new File(selectedFilePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("images", file.getName(), reqFile);
+
+        Call<ModelImage> call = apiInterface.uploadImageQuery(request, customer_id, customer_type, customer_api_key, body);
+        call.enqueue(new Callback<ModelImage>() {
+            @Override
+            public void onResponse(Call<ModelImage> call, Response<ModelImage> response) {
+                Toast.makeText(ImageActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ImageActivity.this, "Body: " + response.body(), Toast.LENGTH_SHORT).show();
+
+                txtExtra.setText("Body: " + response.body() + "\n\n");
+                txtExtra.append("Success: " + response.body().getSuccess() + "\n");
+                txtExtra.append("Error: " + response.body().getError() + "\n");
+            }
+
+            @Override
+            public void onFailure(Call<ModelImage> call, Throwable t) {
+                Toast.makeText(ImageActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
@@ -208,8 +308,14 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
             chooseImageFromGallery();
         }
         if (id == R.id.btnUploadImage) {
-            uploadImageHere();
-            //uploadImageNew();
+            //uploadImageString();
+            uploadImageNew();
+        }
+
+        if (id == R.id.btnUploadImageOther) {
+            //uploadImageMultipart();
+            //uploadImageQueryMap();
+            uploadImageQuery();
         }
     }
 }

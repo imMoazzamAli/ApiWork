@@ -16,6 +16,7 @@
 
 /*
 Login Response
+//ALI6
 {
     "customer_id": "o3WhpA==",
     "customer_name": "Camran20Khan",
@@ -35,6 +36,29 @@ Login Response
     "customer_initials": "CA",
     "customer_type_description": "Private Landlord",
     "action": "successful"
-}*/
+}
+//ORIGINAL
+{
+"customer_id": "onqfqQ==",
+"customer_name": "Trevor",
+"customer_email": "landlord@brightlet.com",
+"customer_mobile_number": "12345678900",
+"customer_type": "private-landlord",
+"customer_status": "1",
+"parent_customer_id": "0",
+"agreed_terms_datetime": "2018-02-02 21:27:49",
+"customer_share_data_datetime": "2018-10-05 08:12:15",
+"customer_api_key": "9e52c2ea3e73465e",
+"is_valid_mobile_number": "1",
+"mobile_confirmation_code": "5874",
+"customer_profile_image": "https:\/\/d1up5da8tlmkbe.cloudfront.net\/profile_image\/cbd9d64ffbbbfdb90137689d073ebbe9.png",
+"agreed_terms": 1,
+"agreed_share": 1,
+"customer_initials": "TR",
+"customer_type_description": "Private Landlord",
+"action": "successful"
+}
+
+*/
 
 

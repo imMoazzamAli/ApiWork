@@ -32,43 +32,18 @@ public class ModelImage {
     @Expose
     String images;
 
-    public String getRequest() {
-        return request;
+    @SerializedName("success")
+    String success;
+
+    @SerializedName("error")
+    String error;
+
+    public String getSuccess() {
+        return success;
     }
 
-    public void setRequest(String request) {
-        this.request = request;
+    public String getError() {
+        return error;
     }
 
-    public String getCustomer_id() {
-        return customer_id;
-    }
-
-    public void setCustomer_id(String customer_id) {
-        this.customer_id = customer_id;
-    }
-
-    public String getCustomer_type() {
-        return customer_type;
-    }
-
-    public void setCustomer_type(String customer_type) {
-        this.customer_type = customer_type;
-    }
-
-    public String getCustomer_api_key() {
-        return customer_api_key;
-    }
-
-    public void setCustomer_api_key(String customer_api_key) {
-        this.customer_api_key = customer_api_key;
-    }
-
-    public String getImages() {
-        return images;
-    }
-
-    public void setImages(String images) {
-        this.images = images;
-    }
 }

@@ -10,18 +10,23 @@ import com.example.user.apiwork.Model.ModelSignInData;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
 
@@ -67,10 +72,11 @@ public interface ApiInterface {
             @Field("remote_address") String remote_address,
             @Field("user_agent") String user_agent
     );
+    /////////////////////////////////IMAGE UPLOAD FUNCTIONS/////////////////////////////////////
 
     @FormUrlEncoded
     @POST("https://api-webservices.brightlet.com/api_media_upload")
-    Call<ModelImage> uploadImage(
+    Call<ModelImage> uploadImageString(
             @Field("request") String request,
             @Field("customer_id") String customer_id,
             @Field("customer_type") String customer_type,
@@ -78,17 +84,6 @@ public interface ApiInterface {
             @Field("images") String images
     );
 
-    @Multipart
-    @POST("https://api-webservices.brightlet.com/api_media_upload?")
-    Call<ModelImage> uploadImageOther(
-            @Part("request") String request,
-            @Part("customer_id") String customer_id,
-            @Part("customer_type") String customer_type,
-            @Part("customer_api_key") String customer_api_key,
-            @Part("images") MultipartBody.Part images
-    );
-
-    //Please consider below function
     @FormUrlEncoded
     @POST("https://api-webservices.brightlet.com/api_media_upload")
     Call<ModelImage> uploadImageNew(
@@ -96,7 +91,34 @@ public interface ApiInterface {
             @Field("customer_id") String customer_id,
             @Field("customer_type") String customer_type,
             @Field("customer_api_key") String customer_api_key,
-            @Field("images") File images
+            @Field("images") MultipartBody.Part image
+    );
+
+    @Multipart
+    @POST("https://api-webservices.brightlet.com/api_media_upload")
+    Call<ModelImage> uploadImageMultipart(
+            @Part("request") RequestBody request,
+            @Part("customer_id") RequestBody customer_id,
+            @Part("customer_type") RequestBody customer_type,
+            @Part("customer_api_key") RequestBody customer_api_key,
+            @Part MultipartBody.Part images
+    );
+
+    @Multipart
+    @POST("https://api-webservices.brightlet.com/api_media_upload")
+    Call<ModelImage> uploadImageQueryMap(
+            @Part("request") String request,
+            @QueryMap Map<String, RequestBody> map
+    );
+
+    @Multipart
+    @POST("https://api-webservices.brightlet.com/api_media_upload")
+    Call<ModelImage> uploadImageQuery(
+            @Part("request") String request,
+            @Query("customer_id") String customer_id,
+            @Query("customer_type") String customer_type,
+            @Query("customer_api_key") String customer_api_key,
+            @Query("images") MultipartBody.Part images
     );
 
 }
