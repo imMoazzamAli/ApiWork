@@ -3,10 +3,10 @@ package com.example.user.apiwork.networking;
 import com.example.user.apiwork.Model.ModelComment;
 import com.example.user.apiwork.Model.ModelImage;
 import com.example.user.apiwork.Model.ModelPost;
-import com.example.user.apiwork.Model.ModelRegisterBrightLet;
+import com.example.user.apiwork.Model.ModelBrightLetRegister;
 import com.example.user.apiwork.Model.ModelSignIn;
 import com.example.user.apiwork.Model.ModelSignInAllUser;
-import com.example.user.apiwork.Model.ModelSignInBrightLet;
+import com.example.user.apiwork.Model.ModelBrightLetSignIn;
 import com.example.user.apiwork.Model.ModelSignInData;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public interface ApiInterface {
     //SignIn API
     @FormUrlEncoded
     @POST("https://api-webservices.brightlet.com")
-    Call<ModelSignInBrightLet> signInUser(
+    Call<ModelBrightLetSignIn> signInUser(
             @Field()
 
 
@@ -69,7 +69,7 @@ public interface ApiInterface {
     //Register API
     @FormUrlEncoded
     @POST("https://api-webservices.brightlet.com")
-    Call<ModelRegisterBrightLet> registerUser(
+    Call<ModelBrightLetRegister> registerUser(
             @Field("request") String request,
             @Field("customer_type") String customer_type,
             @Field("customer_name") String customer_name,
