@@ -275,7 +275,8 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         String customer_api_key = "9e52c2ea3e73465e";*/
 
         //File file = new File(uriPath.toString());
-        File file = new File(selectedFilePath);
+        //File file = new File(selectedFilePath);
+        File file = new File(uriPath.toString());
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("images", file.getName(), reqFile);
 
