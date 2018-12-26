@@ -114,9 +114,13 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
                 public void onResponse(Call<ModelBrightLetSignIn> call, Response<ModelBrightLetSignIn> response) {
                     Toast.makeText(ImageActivity.this, "Success.", Toast.LENGTH_SHORT).show();
 
-                    txtExtra.setText("action: " + response.body().getAction() + "\n\n");
-                    txtExtra.append("url: " + response.body().getCustomer_profile_image() + "\n\n");
-
+                    String abc = "";
+                    txtExtra.setText(abc);
+                    txtExtra.append("action: " + response.body().getAction() + "\n");
+                    txtExtra.append("code: " + response.code() + "\n");
+                    txtExtra.append("url: " + response.body().getCustomer_profile_image() + "\n");
+                    txtExtra.append("error: " + response.body().getError() + "\n");
+                    txtExtra.append("code: " + response.code() + "\n");
                 }
 
                 @Override

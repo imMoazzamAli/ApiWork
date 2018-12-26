@@ -25,11 +25,19 @@ public class ModelBrightLetSignIn {
     @Expose
     private String action;
 
+    @SerializedName("error")
+    @Expose
+    private String error;
+
     @SerializedName("customer_profile_image")
     private String customer_profile_image;
 
     public String getAction() {
         return action;
+    }
+
+    public String getError() {
+        return error;
     }
 
     public String getCustomer_profile_image() {
