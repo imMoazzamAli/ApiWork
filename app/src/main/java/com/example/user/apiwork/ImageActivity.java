@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.graphics.PathUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -94,7 +95,21 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void signInHere() {
+        String request = "login";
+        String customer_type = "private-landlord";
+        String customer_email;
+        String customer_password;
 
+        if (TextUtils.isEmpty(etEmail.getText()) || TextUtils.isEmpty(etPassword.getText())) {
+            Toast.makeText(this, "Both Fields Required", Toast.LENGTH_SHORT).show();
+
+        } else {
+            customer_email = etEmail.getText().toString();
+            customer_password = etPassword.getText().toString();
+
+
+
+        }
 
     }
 

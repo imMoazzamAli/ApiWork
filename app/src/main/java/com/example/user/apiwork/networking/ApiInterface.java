@@ -61,9 +61,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("https://api-webservices.brightlet.com")
     Call<ModelBrightLetSignIn> signInUser(
-            @Field()
-
-
+            @Field("request") String request,
+            @Field("customer_type") String customer_type,
+            @Field("customer_email") String customer_email,
+            @Field("customer_password") String customer_password
     );
 
     //Register API
