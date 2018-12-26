@@ -14,10 +14,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+            <EditText
+                android:id="@+id/etLoginEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/etLoginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etLoginEmail"
+                android:layout_marginTop="10dp"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/btnSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etLoginPassword"
+                android:text="Sign in here"
+                android:textAllCaps="false" />
+
             <ImageView
                 android:id="@+id/imgUpload"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@id/btnSignIn"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:src="@mipmap/ic_launcher" />

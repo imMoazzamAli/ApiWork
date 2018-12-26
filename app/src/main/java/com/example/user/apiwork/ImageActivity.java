@@ -19,6 +19,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,9 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
 
     ApiInterface apiInterface;
 
+    EditText etEmail, etPassword;
+    Button btnSignIn;
+
     ImageView imgUpload;
     TextView txtExtra;
     Button btnChooseImage, btnUploadImage, btnUploadImageOther;
@@ -68,8 +72,12 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
 
-        imgUpload = findViewById(R.id.imgUpload);
+        etEmail = findViewById(R.id.etLoginEmail);
+        etPassword = findViewById(R.id.etLoginPassword);
 
+        btnSignIn = findViewById(R.id.btnSignIn);
+
+        imgUpload = findViewById(R.id.imgUpload);
         txtExtra = findViewById(R.id.txtExtra);
 
         btnChooseImage = findViewById(R.id.btnChooseImage);
@@ -78,9 +86,16 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
+        btnSignIn.setOnClickListener(this);
+
         btnChooseImage.setOnClickListener(this);
         btnUploadImage.setOnClickListener(this);
         btnUploadImageOther.setOnClickListener(this);
+    }
+
+    public void signInHere() {
+
+
     }
 
     public void chooseImageFromGallery() {
@@ -297,15 +312,16 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(ImageActivity.this, "Failure", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
 
-        if (id == R.id.btnChooseImage) {
+        if (view == btnSignIn) {
+            signInHere();
+
+        } else if (id == R.id.btnChooseImage) {
             chooseImageFromGallery();
         }
         if (id == R.id.btnUploadImage) {

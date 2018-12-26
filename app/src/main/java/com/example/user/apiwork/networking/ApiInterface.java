@@ -3,12 +3,12 @@ package com.example.user.apiwork.networking;
 import com.example.user.apiwork.Model.ModelComment;
 import com.example.user.apiwork.Model.ModelImage;
 import com.example.user.apiwork.Model.ModelPost;
-import com.example.user.apiwork.Model.ModelRegister;
+import com.example.user.apiwork.Model.ModelRegisterBrightLet;
 import com.example.user.apiwork.Model.ModelSignIn;
 import com.example.user.apiwork.Model.ModelSignInAllUser;
+import com.example.user.apiwork.Model.ModelSignInBrightLet;
 import com.example.user.apiwork.Model.ModelSignInData;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +19,9 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -59,9 +57,19 @@ public interface ApiInterface {
     @POST("posts")
     Call<ModelPost> postUser(@Body ModelPost modelPost);
 
+    //SignIn API
     @FormUrlEncoded
-    @POST("https://api-webservices.brightlet.com?")
-    Call<ModelRegister> registerUser(
+    @POST("https://api-webservices.brightlet.com")
+    Call<ModelSignInBrightLet> signInUser(
+            @Field()
+
+
+    );
+
+    //Register API
+    @FormUrlEncoded
+    @POST("https://api-webservices.brightlet.com")
+    Call<ModelRegisterBrightLet> registerUser(
             @Field("request") String request,
             @Field("customer_type") String customer_type,
             @Field("customer_name") String customer_name,

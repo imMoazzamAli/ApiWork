@@ -3,7 +3,7 @@ package com.example.user.apiwork.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ModelRegister {
+public class ModelRegisterBrightLet {
 
     @SerializedName("request")
     @Expose
@@ -49,7 +49,7 @@ public class ModelRegister {
     @Expose
     String error;
 
-    public ModelRegister(String request, String customer_type, String customer_name, String customer_email, String customer_password, String customer_mobile_number, String customer_share_data, String remote_address, String user_agent) {
+    public ModelRegisterBrightLet(String request, String customer_type, String customer_name, String customer_email, String customer_password, String customer_mobile_number, String customer_share_data, String remote_address, String user_agent) {
         this.request = request;
         this.customer_type = customer_type;
         this.customer_name = customer_name;

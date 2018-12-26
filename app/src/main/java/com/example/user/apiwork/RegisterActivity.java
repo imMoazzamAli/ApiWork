@@ -3,7 +3,6 @@ package com.example.user.apiwork;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -11,8 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.apiwork.Model.ModelPost;
-import com.example.user.apiwork.Model.ModelRegister;
+import com.example.user.apiwork.Model.ModelRegisterBrightLet;
 import com.example.user.apiwork.networking.ApiClient;
 import com.example.user.apiwork.networking.ApiInterface;
 
@@ -47,23 +45,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void registerUser() {
-        ModelRegister modelRegister = new ModelRegister("register", "Tenant",
+        ModelRegisterBrightLet modelRegister = new ModelRegisterBrightLet("register", "Tenant",
                 "Lala", "lala1@gmail.com", "12345678", "12345678901",
                 "yes|no", "location", "ios|android");
 
-        Call<ModelRegister> call = apiInterface.registerUser("register", "Tenant", "Lala g",
+        Call<ModelRegisterBrightLet> call = apiInterface.registerUser("register", "Tenant", "Lala g",
                 etEmail.getText().toString(), "12345678", "12345678901",
                 "yes|no", "location", "ios|android");
-        call.enqueue(new Callback<ModelRegister>() {
+        call.enqueue(new Callback<ModelRegisterBrightLet>() {
             @Override
-            public void onResponse(Call<ModelRegister> call, Response<ModelRegister> response) {
+            public void onResponse(Call<ModelRegisterBrightLet> call, Response<ModelRegisterBrightLet> response) {
                 Toast.makeText(RegisterActivity.this, "Success: " + response.code(), Toast.LENGTH_SHORT).show();
 
                 if (response.isSuccessful()) {
                     Toast.makeText(RegisterActivity.this, "Body: " + response.body().getError(), Toast.LENGTH_SHORT).show();
                     txtRegisterResponse.setText("Code: " + response.code());
 
-                    ModelRegister registerResponse = response.body();
+                    ModelRegisterBrightLet registerResponse = response.body();
 
                     String content = "";
                     content += "\nEmail: " + registerResponse.getCustomer_email() + "\n";
@@ -77,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
 
             @Override
-            public void onFailure(Call<ModelRegister> call, Throwable t) {
+            public void onFailure(Call<ModelRegisterBrightLet> call, Throwable t) {
                 Toast.makeText(RegisterActivity.this, "Failure", Toast.LENGTH_SHORT).show();
             }
         });
