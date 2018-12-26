@@ -21,4 +21,19 @@ public class ModelBrightLetSignIn {
     @Expose
     String customer_password;
 
+    @SerializedName("action")
+    @Expose
+    private String action;
+
+    @SerializedName("customer_profile_image")
+    private String customer_profile_image;
+
+    public String getAction() {
+        return action;
+    }
+
+    public String getCustomer_profile_image() {
+        return customer_profile_image;
+    }
+
 }

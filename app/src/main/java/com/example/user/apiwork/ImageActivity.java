@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.apiwork.Model.ModelBrightLetSignIn;
 import com.example.user.apiwork.Model.ModelImage;
 import com.example.user.apiwork.networking.ApiClient;
 import com.example.user.apiwork.networking.ApiInterface;
@@ -107,7 +108,22 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
             customer_email = etEmail.getText().toString();
             customer_password = etPassword.getText().toString();
 
+            Call<ModelBrightLetSignIn> call = apiInterface.signInUser(request, customer_type, customer_email, customer_password);
+            call.enqueue(new Callback<ModelBrightLetSignIn>() {
+                @Override
+                public void onResponse(Call<ModelBrightLetSignIn> call, Response<ModelBrightLetSignIn> response) {
+                    Toast.makeText(ImageActivity.this, "Success.", Toast.LENGTH_SHORT).show();
 
+                    txtExtra.setText("action: " + response.body().getAction() + "\n\n");
+                    txtExtra.append("url: " + response.body().getCustomer_profile_image() + "\n\n");
+
+                }
+
+                @Override
+                public void onFailure(Call<ModelBrightLetSignIn> call, Throwable t) {
+                    Toast.makeText(ImageActivity.this, "Failure.", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }
 
