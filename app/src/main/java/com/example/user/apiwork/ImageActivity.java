@@ -120,7 +120,6 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
                     txtExtra.append("code: " + response.code() + "\n");
                     txtExtra.append("url: " + response.body().getCustomer_profile_image() + "\n");
                     txtExtra.append("error: " + response.body().getError() + "\n");
-                    txtExtra.append("code: " + response.code() + "\n");
                 }
 
                 @Override
@@ -130,7 +129,6 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
             });
 
         }
-
     }
 
     public void chooseImageFromGallery() {
@@ -210,11 +208,8 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         //5th parameter
         //final File file = new File(uriPath.getPath());
         final File file = new File(selectedFilePath);
-
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        //RequestBody reqFile = RequestBody.create(MediaType.parse("multipart"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("images", file.getName(), reqFile);
-
 
         Call<ModelImage> call = apiInterface.uploadImageNew(request, customer_id, customer_type, customer_api_key, body);
         call.enqueue(new Callback<ModelImage>() {
@@ -314,19 +309,23 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
 
     public void uploadImageQuery() {
         //ali6@gmail.com information
-        String request = "upload-profile-image";
-        String customer_id = "o3WhpA==";
-        String customer_type = "private-landlord";
-        String customer_api_key = "b7e480c79fc30cdc";
+        RequestBody request = RequestBody.create(MultipartBody.FORM, "upload-profile-image");
+        RequestBody customer_id = RequestBody.create(MultipartBody.FORM, "o3WhpA==");
+        RequestBody customer_type = RequestBody.create(MultipartBody.FORM, "private-landlord");
+        RequestBody customer_api_key = RequestBody.create(MultipartBody.FORM, "b7e480c79fc30cdc");
+        //String request = "upload-profile-image";
+        //String customer_id = "o3WhpA==";
+        //String customer_type = "private-landlord";
+        //String customer_api_key = "b7e480c79fc30cdc";
 
        /* String request = "upload-profile-image";
         String customer_id = "onqfqQ==";
         String customer_type = "private-landlord";
         String customer_api_key = "9e52c2ea3e73465e";*/
 
+        //5th parameter
         //File file = new File(uriPath.toString());
-        //File file = new File(selectedFilePath);
-        File file = new File(uriPath.toString());
+        File file = new File(selectedFilePath);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("images", file.getName(), reqFile);
 
@@ -335,10 +334,8 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(Call<ModelImage> call, Response<ModelImage> response) {
                 Toast.makeText(ImageActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(ImageActivity.this, "Body: " + response.body(), Toast.LENGTH_SHORT).show();
 
-                txtExtra.setText("Body: " + response.body() + "\n\n");
-                txtExtra.append("Success: " + response.body().getSuccess() + "\n");
+                txtExtra.setText("Success: " + response.body().getSuccess() + "\n");
                 txtExtra.append("Error: " + response.body().getError() + "\n");
             }
 

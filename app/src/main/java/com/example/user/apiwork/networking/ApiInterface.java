@@ -100,7 +100,7 @@ public interface ApiInterface {
             @Field("customer_id") String customer_id,
             @Field("customer_type") String customer_type,
             @Field("customer_api_key") String customer_api_key,
-            @Field("images") MultipartBody.Part image
+            @Field("images") MultipartBody.Part images
     );
 
     @Multipart
@@ -123,10 +123,10 @@ public interface ApiInterface {
     @Multipart
     @POST("https://api-webservices.brightlet.com/api_media_upload")
     Call<ModelImage> uploadImageQuery(
-            @Part("request") String request,
-            @Query("customer_id") String customer_id,
-            @Query("customer_type") String customer_type,
-            @Query("customer_api_key") String customer_api_key,
+            @Part("request") RequestBody request,
+            @Part("customer_id") RequestBody customer_id,
+            @Part("customer_type") RequestBody customer_type,
+            @Part("customer_api_key") RequestBody customer_api_key,
             @Query("images") MultipartBody.Part images
     );
 
